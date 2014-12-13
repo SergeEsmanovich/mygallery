@@ -7,6 +7,7 @@
 <script type="text/javascript" src="./fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 <script type="text/javascript" src="./fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 <link rel="stylesheet" type="text/css" href="./fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<script type='text/javascript' src='jquery.quicksand.js'></script>
 <script type='text/javascript' src='js/queryLoader.js'></script>
 <style>
 .mosaicflow__column {
@@ -35,10 +36,51 @@ display: none;
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
+
+$('.rand').click(function(event) {
+var content =  $("#mycontainer  .mosaicflow__column .mosaicflow__item");
+var data =[];
+var rand = [];
+var r;
+while (rand.length<content.length) {
+r = Math.floor((Math.random() * content.length))
+  if(rand.indexOf(r)<0)
+ rand.push(r);
+}
+
+$.each(rand, function(index, val) {
+  data[index] = content[val];
+
+});
+
+
+$("#mycontainer .mosaicflow__column").quicksand(
+  data, 
+  {
+    // all the parameters have sensible defaults
+    // and in most cases can be optional
+    duration: 1000,
+    easing: "swing",
+    attribute: "data-id",
+  }
+);
+
+return false;
+});
+
+ 
+
+  });
+/////////////////////////////////////////////////////
+$(document).ready(function() {
   $('#mycontainer').mosaicflow({
     itemSelector: '.mosaicflow__item',
     minItemWidth: 300
 });
+
+
+
+
 $("a[rel=example_group]").fancybox({
         'transitionIn'    : 'none',
         'transitionOut'   : 'none',
@@ -51,15 +93,16 @@ $("a[rel=example_group]").fancybox({
 </script>
 </head>
 <body>
+<button class="rand">Перетусавать</button>
 <div id="mycontainer">
 <div class="clearfix mosaicflow">
- <div class="mosaicflow__item item_tumb">
+ <div data-id="item0" class="mosaicflow__item item_tumb">
 <a rel="example_group" href="phpthumb/phpThumb.php?src=images/disk.jpg&amp;w=600&amp;fltr[]=wmi|images/horsewatermark.png|*|25">
 <img border="0" src="phpthumb/phpThumb.php?src=images/disk.jpg&amp;w=300&amp;fltr[]=wmi|images/horsewatermark.png|*|25" alt="">
 </a>
 
  </div>
- <div class="mosaicflow__item item_tumb">
+ <div data-id="item1" class="mosaicflow__item item_tumb">
   <a rel="example_group" href="phpthumb/images/disk.jpg"> 
 <img border="0" src="phpthumb/phpThumb.php?src=images/test.jpg&amp;w=300&amp;fltr[]=wmi|images/horsewatermark.png|*|25" alt="">
 </a>
@@ -69,8 +112,7 @@ for ($i = 0; $i < 30; $i++) {
     $x = 300;
     $y = rand(200, 300);
 ?>
-    <div class="mosaicflow__item item_<?php
-    echo $i; ?>">
+    <div  class="mosaicflow__item item_<?php  echo $i; ?>" data-id="item<?php echo $i+2; ?>">
        <a rel="example_group" href="phpthumb/images/test.jpg"> 
        <img width="500px" src="http://placehold.it/<?php
     echo $x . 'x' . $y; ?>" alt=""> 
